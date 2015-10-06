@@ -1,4 +1,4 @@
-psimkins/java-example:
+psimkins/example-java:
   Env:
     - CLASSPATH: 'target/*:lib/*'
     - JAVA_HOME: "/usr/lib/jvm/java-7-oracle/jre"

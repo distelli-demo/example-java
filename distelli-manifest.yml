@@ -1,12 +1,37 @@
 psimkins/java-example:
   Env:
     - CLASSPATH: 'target/*:lib/*'
-    - JAVA_HOME: "/usr/local/jre"
+    - JAVA_HOME: "/usr/lib/jvm/java-7-oracle/jre"
     - JVM_ARGS: '"-Duser.timezone=UTC -Xmx128M -Xms128M"'
-    - PORT: "8080"
+    - PORT: "8001"
     - ARGS: "$PORT"
-  Exec:
-    - exec $JAVA_HOME/bin/java -cp $CLASSPATH $JVM_ARGS com.example.app.SimpleJavaApp $ARGS
+    
   PkgInclude:
     - target/*.jar
     - lib/*.jar
+
+  PreRelease:
+    - sudo add-apt-repository -y ppa:webupd8team/java
+    - sudo apt-get -y update
+    - echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+    - echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections    
+    - sudo apt-get -y install oracle-java7-installer
+    - sudo apt-get -y install oracle-java7-set-default
+    - ./build.sh
+
+  PreInstall:
+    - sudo add-apt-repository -y ppa:webupd8team/java
+    - sudo apt-get -y update
+    - echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+    - echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections    
+    - sudo apt-get -y install oracle-java7-installer
+    - sudo apt-get -y install oracle-java7-set-default
+  
+  Exec:
+    - exec $JAVA_HOME/bin/java -cp $CLASSPATH $JVM_ARGS com.example.app.SimpleJavaApp $ARGS
+    
+  PostStart:
+    - publicIP=`curl ipecho.net/plain`
+    - echo ""
+    - echo ""
+    - echo "Point your browser at http://"$publicIP":"$PORT to validate the app is working.

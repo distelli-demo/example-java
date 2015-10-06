@@ -1,4 +1,4 @@
-distelli/java-example:
+psimkins/java-example:
   Env:
     - CLASSPATH: 'target/*:lib/*'
     - JAVA_HOME: "/usr/local/jre"
